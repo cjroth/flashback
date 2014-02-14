@@ -8,9 +8,9 @@ Before you dive in, please read through all of the issues as these define what t
 
 Inspiration
 ===========
-[Walk [Your City] Login/Registration Form](http://walkyourcity.org/login)
-[GitHub: cjroth/formstrap](https://github.com/cjroth/formstrap)
-[jQuery Basic Plugin Creation](http://learn.jquery.com/plugins/basic-plugin-creation/)
+- [Walk [Your City] Login/Registration Form](http://walkyourcity.org/login)
+- [GitHub: cjroth/formstrap](https://github.com/cjroth/formstrap)
+- [jQuery Basic Plugin Creation](http://learn.jquery.com/plugins/basic-plugin-creation/)
 
 Alternatives
 ============
@@ -18,6 +18,8 @@ Alternatives
 - And me!
 - Me too!
 
+How It Works
+============
 let's say you have a form called "registration":
 ```
 <form id="registration">
