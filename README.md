@@ -47,3 +47,27 @@ onError = function(err) {
   $form.flashback(err);
 }
 ```
+
+Errors
+======
+errors will be in the format:
+```
+{
+  "form": [
+    "This is an error that applies to the entire form."
+  ],
+  "email": [
+    "Email is invalid.",
+    "Email is too long. The maximum length is 250 characters."
+  ],
+  "password": [
+    "Password cannot be empty."
+  ],
+  "first_name": [
+    "First name is empty."
+  ],
+  "last_name": [
+    "Last name is too long. The maximum length is 30 characters."
+  ]
+}
+```
