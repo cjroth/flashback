@@ -1,6 +1,6 @@
-Flashback
+jQuery Flashback
 =========
-A tool to convert JSON objects into beautiful form errors.
+A jQuery plugin to submit forms via AJAX and render validation errors.
 
 # Usage
 
