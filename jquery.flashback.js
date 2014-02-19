@@ -198,7 +198,7 @@
 
       var ajaxParams = {
         url: params.url,
-        method: params.method,
+        type: params.method.toUpperCase(),
         data: $form.serialize(),
       };
 
