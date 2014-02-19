@@ -2,72 +2,92 @@ Flashback
 =========
 A tool to convert JSON objects into beautiful form errors.
 
-To Do
-======
-Before you dive in, please read through all of the issues as these define what this thing really is. They are the specifications. There are surely things out there that already exist, so we should be aware of what they are. If there is something that already does the job well, then we should use it instead of creating this project. If there is something similar but not similar enough, we should use it as inspiration. Please list all similar tools at the bottom of this readme.
+# Usage
 
-Inspiration
-===========
-- [Walk [Your City] Login/Registration Form](http://walkyourcity.org/login)
-- [GitHub: cjroth/formstrap](https://github.com/cjroth/formstrap)
-- [jQuery Basic Plugin Creation](http://learn.jquery.com/plugins/basic-plugin-creation/)
-
-Alternatives
-============
-- Fill me in with an alternative project!
-- And me!
-- Me too!
-
-How It Works
-============
-let's say you have a form called "registration":
+With Defaults:
 ```
-<form id="registration">
-  <!-- ... all of the form content would be here... -->
-</form>
+$('#my-form').flashback();
 ```
 
-then you use jquery to override the form's submit behavior:
+With Configuration:
 ```
-$('#registration').submit(function() {
-  var $form = $(this);
-  $.post('http://api.farmathand.com/v1/register', $form.serialize())
-    .error(onError) // onError is defined below
-    .success(function(data) {
-      // do something with the data
-    })
-  return false;
-})
-```
+$('#my-form').flashback({
 
-and when there is an error, we pass it to the flashback method:
-```
-onError = function(err) {
-  // pass the error to flashback
-  $form.flashback(err);
-}
-```
+  // redirect to url when form submits successfully
+  redirect: 'http://mywebsite.com/redirect-to-me-when-successful',
 
-Errors
-======
-errors will be in the format:
+  // post form data to url (equivalent to the "method" attriute on the <form> tag)
+  url: 'http://mywebsite.com/post-form-data-here',
+
+  // method, as in post, get, put, delete, etc
+  method: 'post',
+
+  // custom function for parsing your errors
+  parser: function(errorObject) {
+    // ...
+    return errorObject;
+  },
+
+  // custom function for decorating your errors with html
+  decorator: function(errorsArray, fieldName) {
+    // ...
+    return myHTML;
+  },
+
+  // custom function for injecting your errors into the dom
+  renderer: function(fields) {
+    var $form = this;
+    // ...
+  },
+
+  // do this when the form submits successfully
+  success: function(data) {
+    // ...
+  }
+});
+```
+jQuery Flashback works with *any* error object format, so no matter how your
+server formats errors to the client, it will work as long as they are valid
+JSON and have a failing status code (>= 400). To use it, just write a function
+to coerce your errors into this global format, mapping field names to arrays
+of string error messages:
+
 ```
 {
-  "form": [
-    "This is an error that applies to the entire form."
-  ],
-  "email": [
-    "Email is invalid.",
-    "Email is too long. The maximum length is 250 characters."
-  ],
-  "password": [
-    "Password cannot be empty."
-  ],
-  "first_name": [
-    "First name is empty."
-  ],
-  "last_name": [
-    "Last name is too long. The maximum length is 30 characters."
-  ]
+  "email": ["There is already a user registered with that email."],
+  "password": ["There is already a user registered with that email."]
 }
+```
+
+It is totally unopinionated about how errors should be rendered or what frontend
+frameworks you might want to use, so you can use it with Bootstrap, UIKit, or
+no framework at all. By default, errors are divs with the class "form-error":
+
+```
+<div class="form-error">This is an error message.</div>
+```
+
+But you can change this by supplying a decorator function. And you can change the
+location within the form that it injects these errors by supplying a renderer
+function.
+
+You can use it right out of the box using just some basic CSS:
+
+```
+.form-error {
+  color: #f00;
+  font-weight: bold;
+}
+```
+
+Flashback will check the form element itself for configuration attributes too:
+
+```
+<form id="myform" data-redirect="/woot">
+```
+
+Is equivalent to:
+
+```
+$('#my-form').flashback({ redirect: '/woot' });
 ```

@@ -1,0 +1,12 @@
+body {
+  margin: 50px;
+}
+
+.container {
+  width: 400px;
+  margin: 0 auto;
+}
+
+form .form-error {
+  color: #f00;
+}
