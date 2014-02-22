@@ -186,7 +186,7 @@
 
       var $form = $(this);
 
-      var params = $.extend({
+      params = $.extend({
         redirect: $form.data('redirect'),
         url: $form.attr('action'),
         method: $form.attr('method') || 'post',
