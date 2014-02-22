@@ -41,7 +41,11 @@
     <script>
       $(document).ready(function() {
         $form = $('#register');
-        $form.flashback();
+        $form.flashback({
+          success: function(data) {
+            $form.prepend('<div class="form-success alert alert-success">Form submitted successfully.</div>');
+          }
+        });
       });
     </script>
 
