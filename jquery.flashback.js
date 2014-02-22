@@ -170,7 +170,7 @@
    */
   var defaultRenderer = function(fields) {
     var $form = this;
-    $form.find('.form-error').remove();
+    $form.find('.form-error, .form-success').remove();
     fields.form && $form.prepend(fields.form);
     for (var fieldName in fields) {
       var $fieldErrors = fields[fieldName];
@@ -225,6 +225,7 @@
           window.location = params.redirect;
           return;
         }
+        params.renderer.call($form, {});
         params.success.call($form, data);
       });
 
