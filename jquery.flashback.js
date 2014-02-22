@@ -178,7 +178,7 @@
     }
   };
 
-  $.fn.flashback = function(params) {
+  var plugin = function(params) {
 
     $forms = this;
 
@@ -234,5 +234,7 @@
     });
 
   };
+
+  $.fn.flashback = plugin;
 
 })(jQuery);
