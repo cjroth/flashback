@@ -178,61 +178,63 @@
     }
   };
 
-  var plugin = function(params) {
+  var onSubmit = function(params) {
 
-    $forms = this;
+    var $form = $(this);
 
-    $forms.submit(function() {
+    params = $.extend({
+      redirect: $form.data('redirect'),
+      url: $form.attr('action'),
+      method: $form.attr('method') || 'post',
+      parser: defaultParser,
+      decorator: defaultDecorator,
+      renderer: defaultRenderer,
+      success: defaultSuccessCallback
+    }, params);
 
-      var $form = $(this);
+    var ajaxParams = {
+      url: params.url,
+      type: params.method.toUpperCase(),
+      data: $form.serialize(),
+    };
 
-      params = $.extend({
-        redirect: $form.data('redirect'),
-        url: $form.attr('action'),
-        method: $form.attr('method') || 'post',
-        parser: defaultParser,
-        decorator: defaultDecorator,
-        renderer: defaultRenderer,
-        success: defaultSuccessCallback
-      }, params);
+    $xhr = $.ajax(ajaxParams);
 
-      var ajaxParams = {
-        url: params.url,
-        type: params.method.toUpperCase(),
-        data: $form.serialize(),
-      };
-
-      $xhr = $.ajax(ajaxParams);
-
-      $xhr.fail(function($xhr, textStatus, errorThrown) {
-        var errorData, errorHTML;
-        try {
-          errorData = JSON.parse($xhr.responseText);
-        } catch(err) {
-          if (!err instanceof SyntaxError) throw err;
-        }
-        errorData = params.parser(errorData);
-        errorHTML = {};
-        for (var fieldName in errorData) {
-          var fieldErrors = errorData[fieldName];
-          errorHTML[fieldName] = params.decorator(fieldErrors);
-        }
-        params.renderer.call($form, errorHTML);
-      });
-
-      $xhr.done(function(data, textStatus, $xhr) {
-        if (params.redirect) {
-          window.location = params.redirect;
-          return;
-        }
-        params.renderer.call($form, {});
-        params.success.call($form, data);
-      });
-
-      return false;
-
+    $xhr.fail(function($xhr, textStatus, errorThrown) {
+      var errorData, errorHTML;
+      try {
+        errorData = JSON.parse($xhr.responseText);
+      } catch(err) {
+        if (!err instanceof SyntaxError) throw err;
+      }
+      errorData = params.parser(errorData);
+      errorHTML = {};
+      for (var fieldName in errorData) {
+        var fieldErrors = errorData[fieldName];
+        errorHTML[fieldName] = params.decorator(fieldErrors);
+      }
+      params.renderer.call($form, errorHTML);
     });
 
+    $xhr.done(function(data, textStatus, $xhr) {
+      if (params.redirect) {
+        window.location = params.redirect;
+        return;
+      }
+      params.renderer.call($form, {});
+      params.success.call($form, data);
+    });
+
+    return false;
+
+  };
+
+  var plugin = function(params) {
+    $forms = this;
+    $forms.on('submit', function() {
+      onSubmit.apply(this, params);
+      return false;
+    });
   };
 
   $.fn.flashback = plugin;
