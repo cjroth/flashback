@@ -232,7 +232,7 @@
   var plugin = function(params) {
     $forms = this;
     $forms.on('submit', function() {
-      onSubmit.apply(this, params);
+      onSubmit.call(this, params);
       return false;
     });
   };
