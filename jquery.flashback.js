@@ -217,7 +217,7 @@
     });
 
     $xhr.done(function(data, textStatus, $xhr) {
-      if (params.redirect) {
+      if (typeof params.redirect === 'string') {
         window.location = params.redirect;
         return;
       }
