@@ -41,11 +41,15 @@
     <script>
       $(document).ready(function() {
         $form = $('#register');
-        $form.flashback({
-          success: function(data) {
-            $form.prepend('<div class="form-success alert alert-success">Form submitted successfully.</div>');
-          }
-        });
+        $form
+          .flashback({
+            success: function(data) {
+              $form.prepend('<div class="form-success alert alert-success">Form submitted successfully.</div>');
+            }
+          })
+          .on('submit', function() {
+            console.log('form submitted.');
+          })
       });
     </script>
 
