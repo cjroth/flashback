@@ -235,6 +235,7 @@
       onSubmit.call(this, params);
       return false;
     });
+    return this;
   };
 
   $.fn.flashback = plugin;
