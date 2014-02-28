@@ -178,6 +178,22 @@
     }
   };
 
+  /**
+   * Replace the :params in a url with their respective values from an object:
+   * 
+   *     prepUrl('/users/:id', { id: 123 }); // returns "/users/123"
+   * 
+   */
+  var prepUrl = function(url, data) {
+    if (!data) return url;
+    params = url.match(/:[a-zA-Z_]+/g);
+    for (var i in params) {
+      var param = params[i].substr(1);
+      url = url.replace(':' + param, data[param]);
+    }
+    return url;
+  };
+
   var onSubmit = function(params) {
 
     var $form = $(this);
@@ -218,7 +234,7 @@
 
     $xhr.done(function(data, textStatus, $xhr) {
       if (typeof params.redirect === 'string') {
-        window.location = params.redirect;
+        window.location = prepUrl(params.redirect, data);
         return;
       }
       params.renderer.call($form, {});
