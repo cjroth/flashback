@@ -125,6 +125,8 @@
 
   Flashback.prototype.submit = function() {
 
+    // @todo break this function up into smaller functions
+
     var self = this;
 
     var $xhr = $.ajax({
