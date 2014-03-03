@@ -42,7 +42,7 @@
       $(document).ready(function() {
 
         $('#register')
-          .flashback({ success: onFormSuccess })
+          .flashback({ success: onFormSuccess, error: onFormError })
           .on('submit', onFormSubmit)
 
         function onFormSubmit() {
@@ -51,6 +51,10 @@
 
         function onFormSuccess() {
           $(this).prepend('<div class="form-success alert alert-success">Form submitted successfully.</div>');
+        }
+
+        function onFormError() {
+          $(this).prepend('<div class="form-error alert alert-danger">Please correct the errors and try again.</div>');
         }
 
       });

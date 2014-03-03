@@ -106,7 +106,8 @@
       parser: defaultParser,
       decorator: defaultDecorator,
       renderer: defaultRenderer,
-      success: defaultSuccessCallback
+      success: defaultSuccessCallback,
+      error: defaultErrorCallback
     }, params);
 
     this.$form.addClass('flashback');
@@ -149,6 +150,7 @@
         errorHTML[fieldName] = self.params.decorator(fieldErrors);
       }
       self.params.renderer.call(self.$form, errorHTML);
+      self.params.error.call(self.$form, errorData);
     });
 
     $xhr.done(function(data, textStatus, $xhr) {
@@ -164,7 +166,6 @@
 
   };
 
-
   /**
    * The default success callback will be called when a form submits
    * successfully. You can override it by supplying your own callback:
@@ -173,6 +174,17 @@
    *
    */
   function defaultSuccessCallback(data, $xhr) {
+    // 
+  }
+
+  /**
+   * The default error callback will be called when a form has errors. You can
+   * override it by supplying your own callback:
+   *
+   *     $(form).flashback({ error: myErrorCallback });
+   *
+   */
+  function defaultErrorCallback(data, $xhr) {
     // 
   }
 
