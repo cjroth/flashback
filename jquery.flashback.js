@@ -117,14 +117,14 @@
 
   Flashback.prototype.attachEventListeners = function() {
     var self = this;
-    this.$form.on('submit', function() {
-      self.submit();
+    this.$form.on('submit', function(e, args) {
+      self.submit(args);
       return false;
     });
     return this;
   };
 
-  Flashback.prototype.submit = function() {
+  Flashback.prototype.submit = function(args) {
 
     // @todo break this function up into smaller functions
 
@@ -133,7 +133,7 @@
     var $xhr = $.ajax({
       url: this.params.url,
       type: this.params.method.toUpperCase(),
-      data: this.$form.serialize(),
+      data: this.$form.serialize()
     });
 
     $xhr.fail(function($xhr, textStatus, errorThrown) {
@@ -151,7 +151,7 @@
       }
       self.params.renderer.call(self.$form, errorHTML);
       self.params.error.call(self.$form, errorData);
-      self.$form.trigger('error');
+      self.$form.trigger('error', args);
     });
 
     $xhr.done(function(data, textStatus, $xhr) {
@@ -161,7 +161,7 @@
       }
       self.params.renderer.call(self.$form, {});
       self.params.success.call(self.$form, data);
-      self.$form.trigger('success');
+      self.$form.trigger('success', args);
     });
 
     return this;
