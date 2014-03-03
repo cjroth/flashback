@@ -42,8 +42,10 @@
       $(document).ready(function() {
 
         $('#register')
-          .flashback({ success: onFormSuccess, error: onFormError })
+          .flashback()
           .on('submit', onFormSubmit)
+          .on('error', onFormError)
+          .on('success', onFormSuccess)
 
         function onFormSubmit() {
           console.log('form #' + $(this).attr('id') + ' submitted');
