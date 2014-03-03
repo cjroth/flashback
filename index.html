@@ -13,22 +13,22 @@
       <h1>jQuery Flashback</h1>
       <h5>by Chris Roth</h5>
 
-      <form id="register" action="http://api.staging.farmathand.com/v1/register" role="form">
+      <form id="register" action="http://localhost:9875/user" role="form">
         <div class="form-group">
           <label for="first_name">First name</label>
-          <input type="text" class="form-control" name="first_name" placeholder="First name">
+          <input type="text" class="form-control" name="first_name" placeholder="First name" value="Chris">
         </div>
         <div class="form-group">
           <label for="last_name">Last name</label>
-          <input type="text" class="form-control" name="last_name" placeholder="Last name">
+          <input type="text" class="form-control" name="last_name" placeholder="Last name" value="Roth">
         </div>
         <div class="form-group">
           <label for="email">Email address</label>
-          <input type="text" class="form-control" name="email" placeholder="Enter email">
+          <input type="text" class="form-control" name="email" placeholder="Enter email" value="chris@cjroth.com">
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" class="form-control" name="password" placeholder="Enter password">
+          <input type="password" class="form-control" name="password" placeholder="Enter password" value="password">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
@@ -40,16 +40,19 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script>
       $(document).ready(function() {
-        $form = $('#register');
-        $form
-          .flashback({
-            success: function(data) {
-              $form.prepend('<div class="form-success alert alert-success">Form submitted successfully.</div>');
-            }
-          })
-          .on('submit', function() {
-            console.log('form submitted.');
-          })
+
+        $('#register')
+          .flashback({ success: onFormSuccess })
+          .on('submit', onFormSubmit)
+
+        function onFormSubmit() {
+          console.log('form #' + $(this).attr('id') + ' submitted');
+        }
+
+        function onFormSuccess() {
+          $(this).prepend('<div class="form-success alert alert-success">Form submitted successfully.</div>');
+        }
+
       });
     </script>
 
