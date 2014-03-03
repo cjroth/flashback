@@ -28,15 +28,4 @@ app.post('/user', function(req, res, next) {
   }, 500);
 });
 
-app.post('/farm', function(req, res, next) {
-  var errors = {};
-  if (!validator.isFloat(req.body.rainfall))
-    errors.rainfall = ['Rainfall must be a number'];
-  if (_.size(errors))
-    return res.json(400, errors);
-  setTimeout(function() {
-    res.send(200);
-  }, 500);
-});
-
 app.listen(9875);
