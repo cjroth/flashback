@@ -247,9 +247,15 @@
 
   var plugin = function(params) {
     $forms = this;
-    $forms.on('submit', function() {
-      onSubmit.call(this, params);
-      return false;
+    $forms.each(function() {
+      var $form = $(this);
+      if ($form.hasClass('flashback')) return;
+      $form
+        .addClass('flashback')
+        .on('submit', function() {
+          onSubmit.call(this, params);
+          return false;
+        });
     });
     return this;
   };
