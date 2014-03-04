@@ -294,4 +294,6 @@
     return url;
   }
 
+  $('.flashback').flashback();
+
 })(jQuery);
