@@ -1,0 +1,13 @@
+{
+  "name": "flashback",
+  "version": "0.1.0",
+  "main": "jquery.flashback.js",
+  "ignore": [
+    "*",
+    "!jquery.flashback.js",
+    "!jquery.flashback.min.js"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.9.0"
+  }
+}
