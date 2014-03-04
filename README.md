@@ -2,7 +2,10 @@ jQuery Flashback
 =========
 A jQuery plugin to submit forms via AJAX and render validation errors.
 
-# Usage
+## Quick start
+Install with [Bower](http://bower.io/): `bower install flashback`
+
+## Usage
 
 With Defaults:
 ```
