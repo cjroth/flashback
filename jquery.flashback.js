@@ -151,7 +151,7 @@
       }
       self.params.renderer.call(self.$form, errorHTML);
       self.params.error.call(self.$form, errorData);
-      self.$form.trigger('error', args);
+      self.$form.trigger('error', [args, errorData]);
     });
 
     $xhr.done(function(data, textStatus, $xhr) {
@@ -161,7 +161,7 @@
       }
       self.params.renderer.call(self.$form, {});
       self.params.success.call(self.$form, data);
-      self.$form.trigger('success', args);
+      self.$form.trigger('success', [args, data]);
     });
 
     return this;
