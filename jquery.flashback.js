@@ -88,8 +88,8 @@
 
   $.fn.flashback = function(params) {
     this.each(function() {
+      if (this._flashback) return;
       var $form = $(this);
-      if ($form.hasClass('flashback')) return;
       new Flashback($form, params);
     });
     return this;
@@ -111,7 +111,7 @@
       error: defaultErrorCallback
     }, params);
 
-    this.$form.addClass('flashback');
+    this.$form.get(-1)._flashback = true;
     this.attachEventListeners();
 
   }
