@@ -19,6 +19,12 @@ $('#my-form').flashback({
   // redirect to url when form submits successfully
   redirect: 'http://mywebsite.com/redirect-to-me-when-successful',
 
+  // automatically submit the form when any values within it change
+  watch: true,
+  
+  // should we send empty values when we submit the form?
+  sendEmptyValues: false,
+
   // post form data to url (equivalent to the "method" attriute on the <form> tag)
   url: 'http://mywebsite.com/post-form-data-here',
 
