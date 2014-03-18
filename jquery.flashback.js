@@ -21,7 +21,7 @@
  *      watch: true,
  *      
  *      // should we send empty values when we submit the form?
- *      sendEmptyValues: false,
+ *      sendEmptyValues: true,
  *      
  *      // post form data to url (equivalent to the "method" attriute on the <form> tag)
  *      url: 'http://mywebsite.com/post-form-data-here',
@@ -108,7 +108,7 @@
     this.params = $.extend({
       redirect: this.$form.data('redirect'),
       watch: this.$form.data('watch') || false,
-      sendEmptyValues: this.$form.data('send-empty-values') || false,
+      sendEmptyValues: this.$form.data('send-empty-values') || true,
       url: this.$form.attr('action'),
       method: this.$form.attr('method') || 'post',
       parser: defaultParser,
