@@ -108,6 +108,7 @@
     this.params = $.extend({
       redirect: this.$form.data('redirect'),
       watch: this.$form.data('watch') || false,
+      headers: getDefaultHeaders(),
       sendEmptyValues: this.$form.data('send-empty-values') || true,
       url: this.$form.attr('action'),
       method: this.$form.attr('method') || 'post',
@@ -116,7 +117,23 @@
       renderer: defaultRenderer,
       success: defaultSuccessCallback,
       error: defaultErrorCallback
-    }, params);
+    }, this.$form.data(), params);
+
+    if (this.params.config) {
+
+      if (typeof this.params.config === 'string' && typeof window[this.params.config] === 'function') {
+        this.params.config = window[this.params.config];
+      }
+
+      if (typeof this.params.config === 'function') {
+        this.params.config.apply(this);
+      }
+
+      if (typeof this.params.config === 'object') {
+        this.params = $.extend(this.params, this.params.config);
+      }
+
+    }
 
     this.$form.get(-1)._flashback = true;
     this.attachEventListeners();
@@ -151,7 +168,8 @@
     var $xhr = $.ajax({
       url: this.params.url,
       type: this.params.method.toUpperCase(),
-      data: data
+      headers: this.params.headers,
+      data: this.$form.serialize()
     });
 
     $xhr.fail(function($xhr, textStatus, errorThrown) {
@@ -185,6 +203,16 @@
     return this;
 
   };
+
+  /**
+   * The default headers to be applied to each ajax request.
+   *
+   *     $(form).flashback({ headers: { 'X-API-TOKEN': 'My API Token' } });
+   *
+   */
+  function getDefaultHeaders() {
+    return { 'Accept' : 'application/json' };
+  }
 
   /**
    * The default success callback will be called when a form submits
