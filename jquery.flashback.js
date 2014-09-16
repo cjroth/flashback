@@ -16,16 +16,10 @@
  *
  *      // redirect to url when form submits successfully
  *      redirect: 'http://mywebsite.com/redirect-to-me-when-successful',
- *      
- *      // automatically submit the form when any values within it change
- *      watch: true,
- *      
- *      // should we send empty values when we submit the form?
- *      sendEmptyValues: true,
- *      
+ *
  *      // post form data to url (equivalent to the "method" attriute on the <form> tag)
  *      url: 'http://mywebsite.com/post-form-data-here',
- *      
+ *
  *      // method, as in post, get, put, delete, etc
  *      method: 'post',
  *
@@ -106,12 +100,9 @@
     this.$form = $form;
 
     this.params = $.extend({
-      redirect: this.$form.data('redirect'),
-      watch: this.$form.data('watch') || false,
-      headers: getDefaultHeaders(),
-      sendEmptyValues: this.$form.data('send-empty-values') || true,
       url: this.$form.attr('action'),
       method: this.$form.attr('method') || 'post',
+      headers: getDefaultHeaders(),
       parser: defaultParser,
       decorator: defaultDecorator,
       renderer: defaultRenderer,
@@ -161,10 +152,6 @@
 
     var self = this;
 
-    data = self.params.sendEmptyValues ? this.$form.serialize() : prepData(this.$form.serializeArray());
-
-    self.$form.trigger('before-submit', [args, data]);
-
     var $xhr = $.ajax({
       url: this.params.url,
       type: this.params.method.toUpperCase(),
@@ -183,7 +170,7 @@
       errorHTML = {};
       for (var fieldName in errorData) {
         var fieldErrors = errorData[fieldName];
-        errorHTML[fieldName] = self.params.decorator(fieldErrors);
+        errorHTML[fieldName] = self.params.decorator(fieldErrors, fieldName);
       }
       self.params.renderer.call(self.$form, errorHTML);
       self.params.error.call(self.$form, errorData);
@@ -192,7 +179,11 @@
 
     $xhr.done(function(data, textStatus, $xhr) {
       if (typeof self.params.redirect === 'string') {
-        window.location = prepUrl(self.params.redirect, data);
+        if (self.params.redirect.length === 0) {
+          window.location.reload();
+        } else {
+          window.location = prepUrl(self.params.redirect, data);
+        }
         return;
       }
       self.params.renderer.call(self.$form, {});
@@ -203,6 +194,7 @@
     return this;
 
   };
+
 
   /**
    * The default headers to be applied to each ajax request.
@@ -310,7 +302,14 @@
   function defaultRenderer(fields) {
     var $form = this;
     $form.find('.form-error, .form-success').remove();
-    fields.form && $form.prepend(fields.form);
+    if (fields.form) {
+      var $globalError = $form.find('.form-error-global');
+      if (!$globalError.size()) {
+        $form.prepend(fields.form);
+      } else {
+        $globalError.html(fields.form);
+      }
+    }
     for (var fieldName in fields) {
       var $fieldErrors = fields[fieldName];
       $form.find('[name="' + fieldName + '"]').after($fieldErrors);
@@ -331,14 +330,6 @@
       url = url.replace(':' + param, data[param]);
     }
     return url;
-  }
-
-  function prepData(data) {
-    var newData = {};
-    for (var i in data) {
-      if (data[i].value) newData[data[i].name] = data[i].value;
-    }
-    return newData;
   }
 
   $('.flashback').flashback();
